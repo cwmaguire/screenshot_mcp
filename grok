@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# 2026-01-31 CM
+# Run the grok CLI with the current directory
+node /home/c/dev/grok-cli/dist/index.js -d /home/c/dev/mcp_screenshot --auto-edit
