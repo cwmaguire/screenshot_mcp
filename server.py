@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 from io import BytesIO
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 import uvicorn
 from mcp.server import Server
@@ -15,7 +16,11 @@ from mcp.server.lowlevel import NotificationOptions
 from mcp.server.models import InitializationOptions
 import mcp.types as types
 from PIL import Image
-from xai import AsyncClient
+from xai_sdk import AsyncClient
+from xai_sdk.chat import user, system, image
+
+# Load environment variables
+load_dotenv()
 
 # Initialize xAI client
 xai_client = AsyncClient(api_key=os.getenv("XAI_API_KEY"))
@@ -61,8 +66,8 @@ async def list_tools() -> list[types.Tool]:
     return [
         types.Tool(
             name="take_screenshot",
-            description="Take a screenshot of the current GUI. Optionally analyze with grok-4: ask a question, get debugging description, or both.",
-            input_schema={
+            description="Take a screenshot of the currently active window. Optionally analyze with grok-4: ask a question, get debugging description, or both.",
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "mode": {
@@ -74,8 +79,7 @@ async def list_tools() -> list[types.Tool]:
                         "type": "string",
                         "description": "The question to ask about the image (required if mode is 'question' or 'both')."
                     }
-                },
-                "required": ["mode"]
+                }
             }
         )
     ]
@@ -86,8 +90,8 @@ async def call_tool(name: str, arguments: dict[str, any]) -> types.CallToolResul
         try:
             timestamp = int(time.time())
             filename = f"/tmp/screenshot_{timestamp}.png"
-            logging.info(f"Taking screenshot to {filename}")
-            result = subprocess.run(["scrot", filename], check=True)
+            logging.info(f"Taking screenshot of active window to {filename}")
+            result = subprocess.run(["scrot", "-u", filename], check=True)
             
             with Image.open(filename) as img:
                 if img.mode != 'RGB':
@@ -98,7 +102,7 @@ async def call_tool(name: str, arguments: dict[str, any]) -> types.CallToolResul
             
             content = [
                 types.TextContent(type="text", text=f"Screenshot saved to {filename}"),
-                types.ImageContent(type="image", data=img_base64, mime_type="image/png")
+                types.ImageContent(type="image", data=img_base64, mimeType="image/png")
             ]
             
             # Check for grok-4 analysis
@@ -123,14 +127,11 @@ async def call_tool(name: str, arguments: dict[str, any]) -> types.CallToolResul
                     prompt = f"First, provide a detailed debugging description of this image. Then, answer the following question about the image: {question}"
                 
                 # Call grok-4
-                messages = [
-                    {"role": "user", "content": [
-                        {"type": "text", "text": prompt},
-                        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img_base64}"}}
-                    ]}
-                ]
-                response = await xai_client.chat(model="grok-4", messages=messages)
-                grok_response = response.choices[0].message.content
+                chat = xai_client.chat.create(model="grok-4")
+                chat.append(system("You are Grok, a helpful AI assistant."))
+                chat.append(user(prompt, image(f"data:image/png;base64,{img_base64}")))
+                response = await chat.sample()
+                grok_response = response.content
                 
                 # Check for out of tokens
                 if "out of tokens" in grok_response.lower():

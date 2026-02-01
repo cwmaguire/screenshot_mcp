@@ -9,5 +9,9 @@ dependencies = [
     "mcp>=1.26.0",
     "pillow>=12.1.0",
     "uvicorn>=0.40.0",
-    "xai>=0.3.0",
+    "xai-sdk",
+    "python-dotenv>=1.0.0",
 ]
+
+[tool.uv.sources]
+xai-sdk = { git = "https://github.com/xai-org/xai-sdk-python.git" }
