@@ -11,6 +11,7 @@ dependencies = [
     "uvicorn>=0.40.0",
     "xai-sdk",
     "python-dotenv>=1.0.0",
+    "pytesseract",
 ]
 
 [tool.uv.sources]

@@ -96,12 +96,30 @@ async def call_tool(name: str, arguments: dict[str, any]) -> types.CallToolResul
             with Image.open(filename) as img:
                 if img.mode != 'RGB':
                     img = img.convert('RGB')
+
+                # Save original screenshot for comparison
+                original_filename = filename.replace('.png', '_original.png')
+                img.save(original_filename)
+
+                # Crop to remove UI elements (top 60px for menu/tabs, right 20px for scrollbar)
+                img = img.crop((0, 60, img.width - 20, img.height))
+
+                # Extract text using OCR from cropped image
+                try:
+                    ocr_text = pytesseract.image_to_string(img).strip()
+                except Exception as e:
+                    logging.warning(f"OCR failed: {e}")
+                    ocr_text = ""
+
                 buffer = BytesIO()
                 img.save(buffer, format='PNG')
                 img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+
+                # Save cropped image back to file for viewing
+                img.save(filename)
             
             content = [
-                types.TextContent(type="text", text=f"Screenshot saved to {filename}"),
+                types.TextContent(type="text", text=f"Screenshot saved to {filename} (original: {original_filename})"),
                 types.ImageContent(type="image", data=img_base64, mimeType="image/png")
             ]
             
@@ -119,12 +137,13 @@ async def call_tool(name: str, arguments: dict[str, any]) -> types.CallToolResul
                     raise ValueError("Out of tokens, cannot process images")
                 
                 # Build prompt
+                ocr_context = f"\n\nExtracted text from the image:\n{ocr_text}" if ocr_text else ""
                 if mode == "description":
-                    prompt = "Provide a detailed debugging description of this image."
+                    prompt = f"Provide a detailed description of this screenshot, focusing on any visible text, code, or UI elements.{ocr_context}"
                 elif mode == "question":
-                    prompt = f"Answer the following question about this image: {question}"
+                    prompt = f"Answer the following question about this screenshot: {question}{ocr_context}"
                 elif mode == "both":
-                    prompt = f"First, provide a detailed debugging description of this image. Then, answer the following question about the image: {question}"
+                    prompt = f"First, provide a detailed description of this screenshot, focusing on any visible text, code, or UI elements. Then, answer the following question about the screenshot: {question}{ocr_context}"
                 
                 # Call grok-4
                 chat = xai_client.chat.create(model="grok-4")
