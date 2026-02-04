@@ -2,80 +2,55 @@
 Temporary file management for MCP Screenshot Server.
 """
 
-import atexit
 import os
 import tempfile
-from typing import Optional
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
 
 class TempFileManager:
     """Manages temporary files with automatic cleanup."""
 
-    def __init__(self, base_dir: str = "/tmp"):
-        self.base_dir = base_dir
-        self.temp_files = set()
-        atexit.register(self.cleanup)
+    def __init__(self, prefix: str = "mcp_screenshot_", suffix: str = ".png"):
+        self.prefix = prefix
+        self.suffix = suffix
+        self.temp_files: set[str] = set()
 
-    def create_temp_file(self, suffix: str = ".png") -> str:
-        """Create temporary file and track it for cleanup.
+    @asynccontextmanager
+    async def create_temp_file(self) -> AsyncGenerator[str, None]:
+        """Create a temporary file and yield its path, cleaning up afterwards."""
+        temp_fd, temp_path = tempfile.mkstemp(prefix=self.prefix, suffix=self.suffix)
+        os.close(temp_fd)  # Close the file descriptor, keep the path
 
-        Args:
-            suffix: File extension (default: .png)
+        self.temp_files.add(temp_path)
 
-        Returns:
-            Path to the created temporary file
-        """
-        fd, path = tempfile.mkstemp(suffix=suffix, dir=self.base_dir)
-        os.close(fd)  # Close the file descriptor, keep path
-        self.temp_files.add(path)
-        return path
-
-    def mark_for_cleanup(self, path: str) -> None:
-        """Mark a file for cleanup.
-
-        Args:
-            path: Path to the file to mark for cleanup
-        """
-        self.temp_files.add(path)
-
-    def unmark_for_cleanup(self, path: str) -> None:
-        """Remove a file from cleanup tracking.
-
-        Args:
-            path: Path to remove from cleanup tracking
-        """
-        self.temp_files.discard(path)
-
-    def cleanup(self) -> None:
-        """Clean up all tracked temporary files."""
-        for path in self.temp_files.copy():
-            try:
-                if os.path.exists(path):
-                    os.unlink(path)
-                self.temp_files.discard(path)
-            except OSError:
-                # File may have been deleted already, just remove from set
-                self.temp_files.discard(path)
-
-    def cleanup_file(self, path: str) -> None:
-        """Clean up a specific file and remove from tracking.
-
-        Args:
-            path: Path to the file to clean up
-        """
         try:
-            if os.path.exists(path):
-                os.unlink(path)
-        except OSError:
-            pass
-        self.temp_files.discard(path)
+            yield temp_path
+        finally:
+            # Cleanup
+            if os.path.exists(temp_path):
+                os.unlink(temp_path)
+            self.temp_files.discard(temp_path)
+
+    async def cleanup_all(self) -> None:
+        """Clean up all tracked temporary files."""
+        for temp_path in self.temp_files.copy():
+            if os.path.exists(temp_path):
+                os.unlink(temp_path)
+            self.temp_files.discard(temp_path)
+
+    def __len__(self) -> int:
+        """Return the number of active temporary files."""
+        return len(self.temp_files)
 
 
-# Global instance (will be configured at runtime)
-temp_manager = None
+# Global temp file manager instance
+temp_manager = TempFileManager()
 
-def init_temp_manager(temp_dir: str = "/tmp"):
-    """Initialize the global temp manager with config."""
+
+def init_temp_manager():
+    """Initialize the global temp manager."""
     global temp_manager
-    temp_manager = TempFileManager(temp_dir)
+    temp_manager = TempFileManager()
     return temp_manager
+

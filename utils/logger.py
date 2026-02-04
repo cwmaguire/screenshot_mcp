@@ -23,8 +23,8 @@ def setup_logging(log_file: str = "server.log", level: int = logging.DEBUG):
     for handler in logger.handlers[:]:
         logger.removeHandler(handler)
 
-    # Console handler
-    console_handler = logging.StreamHandler(sys.stdout)
+    # Console handler (use stderr for MCP stdio compatibility)
+    console_handler = logging.StreamHandler(sys.stderr)
     console_handler.setLevel(level)
     console_formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'

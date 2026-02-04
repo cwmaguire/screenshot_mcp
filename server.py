@@ -17,7 +17,7 @@ from exceptions import (
     OCRError, RateLimitError, APIError, ProcessingTimeoutError
 )
 from utils import temp_manager, init_temp_manager, RateLimiter, process_image, setup_logging, metrics
-import config
+from config import config
 
 # Load environment variables
 load_dotenv()
@@ -31,7 +31,7 @@ OCR_TIMEOUT = config.OCR_TIMEOUT
 API_TIMEOUT = config.API_TIMEOUT
 
 # Initialize temp manager with config
-init_temp_manager(config.TEMP_DIR)
+temp_manager = init_temp_manager(config.TEMP_DIR)
 
 def is_out_of_tokens():
     return os.path.exists(config.TOKENS_FLAG)
@@ -211,7 +211,6 @@ async def take_screenshot(mode: Optional[str] = "description", question: Optiona
         duration = time.time() - start_time
         metrics.record_time("screenshot_duration", duration)
         metrics.record_error("UnexpectedError")
-        raise ScreenshotError(f"Unexpected error: {e}") from e
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http", mount_path="/mcp")
+    mcp.run()

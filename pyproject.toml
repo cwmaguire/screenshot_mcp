@@ -13,6 +13,11 @@ dependencies = [
     "xai-sdk",
     "python-dotenv>=1.0.0",
     "pytesseract",
+    "fastmcp>=2.14.5",
+    "pydantic>=2.12.5",
+    "jsonrpcserver>=5.0.9",
+    "sse-starlette>=3.2.0",
+    "openai>=2.16.0",
 ]
 
 [tool.uv.sources]

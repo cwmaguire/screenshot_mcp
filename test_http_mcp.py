@@ -26,8 +26,8 @@ async def test_mcp_server():
                 for tool in tools_result.tools:
                     print(f"- {tool.name}: {tool.description}")
 
-                # Optionally, test calling a tool (e.g., screenshot)
-                result = await session.call_tool("hello", {})
+                # Test calling the take_screenshot tool
+                result = await session.call_tool("take_screenshot", {"mode": "description"})
                 print("Tool result:", result)
 
     except Exception as e:
