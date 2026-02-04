@@ -101,6 +101,7 @@ async def take_screenshot(mode: Optional[str] = "description", question: Optiona
             buffer = BytesIO()
             img.save(buffer, format='PNG')
             img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+            logging.info(f"Base64 image (first 100 chars): {img_base64[:100]}")
 
             # Save cropped image back to file for viewing
             img.save(filename)
