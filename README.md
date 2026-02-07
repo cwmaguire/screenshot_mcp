@@ -42,6 +42,22 @@ Replace `/path/to/mcp_screenshot_server` with the actual path.
 
 Once connected, the LLM can call the `take_screenshot` tool to capture the current GUI screenshot. The tool returns the screenshot as a base64-encoded PNG image.
 
+## How Screenshots Are Taken
+
+**Linux/X11 Specific:** This server uses \`scrot\` to capture the **currently active (focused) window**.
+
+- Captures screenshot with \`scrot -u\` (active window only).
+- Processes image with **Tesseract OCR** for text extraction.
+- Optionally sends to **Grok-4 AI** for analysis:
+  - \`description\`: Detailed UI/text/code description.
+  - \`question\`: Answer specific questions about the screenshot.
+  - \`both\`: Both above.
+
+**Machine Dependencies & Limitations:**
+- Requires **X11** display server (\`scrot\` limited Wayland support).
+- Runs on the **local machine** with GUI access (DISPLAY env var).
+- Install deps: \`sudo apt install scrot tesseract-ocr\`.
+
 ## Requirements
 
 - scrot (install via apt: `sudo apt install scrot`)
