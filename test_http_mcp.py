@@ -22,13 +22,26 @@ async def test_mcp_server():
                 logging.info("Sending list_tools request")
                 tools_result = await session.list_tools()
                 logging.info("list_tools response received")
-                print("Available tools:")
-                for tool in tools_result.tools:
-                    print(f"- {tool.name}: {tool.description}")
+                print(f"Tools result type: {type(tools_result)}")
+                print(f"Tools result: {tools_result}")
+                if hasattr(tools_result, 'tools'):
+                    print("Available tools:")
+                    for tool in tools_result.tools:
+                        print(f"- {tool.name}: {tool.description}")
+                else:
+                    print("No tools attribute found")
 
                 # Test calling the take_screenshot tool
+                print("Calling take_screenshot tool...")
                 result = await session.call_tool("take_screenshot", {"mode": "description"})
-                print("Tool result:", result)
+                print("Tool result received!")
+                print(f"Result type: {type(result)}")
+                if hasattr(result, 'content'):
+                    print(f"Content items: {len(result.content)}")
+                    for i, content in enumerate(result.content):
+                        print(f"Content {i}: {content}")
+                else:
+                    print(f"Result: {result}")
 
     except Exception as e:
         import traceback

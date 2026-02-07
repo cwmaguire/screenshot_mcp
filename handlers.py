@@ -231,17 +231,17 @@ async def handle_take_screenshot(arguments: Dict[str, Any]) -> CallToolResponse:
             if not await take_screenshot(screenshot_path):
                 raise Exception("Failed to capture screenshot")
 
-            # OCR with tesseract
-            text = await extract_text_from_image(screenshot_path)
-            logger.info("OCR completed, text length: %d", len(text or ""))
-            content: List[ContentBlock] = [TextContent(type="text", text=f"Extracted text:\n{text or 'No text detected'}")]
+            content: List[ContentBlock] = []
 
-            # Optional Grok-4 analysis
+            # Grok-4 analysis
             mode = arguments.get("mode", "description")
             question = arguments.get("question")
+            logger.info("Starting Grok analysis with mode: %s", mode)
 
             if mode in ["description", "both"]:
+                logger.info("Generating description")
                 description = await analyze_screenshot_with_grok(screenshot_path, mode="description")
+                logger.info("Description generated, length: %d", len(description or ""))
                 content.append(TextContent(type="text", text=f"Description: {description}"))
 
             if mode in ["question", "both"]:
@@ -249,7 +249,9 @@ async def handle_take_screenshot(arguments: Dict[str, Any]) -> CallToolResponse:
                     return CallToolResponse(
                         content=[TextContent(type="text", text="Question required for question mode.")]
                     )
+                logger.info("Answering question")
                 answer = await analyze_screenshot_with_grok(screenshot_path, mode="question", question=question)
+                logger.info("Answer generated, length: %d", len(answer or ""))
                 content.append(TextContent(type="text", text=f"Answer: {answer}"))
 
             logger.info("Screenshot processing and analysis completed")

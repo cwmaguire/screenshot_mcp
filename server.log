@@ -1,19 +1,322 @@
-INFO:     Started server process [1129760]
+INFO:     Started server process [1220588]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
-INFO:     127.0.0.1:57800 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58066 - "POST /mcp HTTP/1.1" 200 OK
 INFO:app:Received notification: notifications/initialized
-INFO:     127.0.0.1:57800 - "POST /mcp HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57810 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58066 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58072 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+handle_take_screenshot called
+INFO:handlers:Processing take_screenshot with mode: description
+About to create temp file
+Temp file created: /tmp/mcp_screenshot_puewyqoq.png
+Calling take_screenshot
+take_screenshot called with output_path: /tmp/mcp_screenshot_puewyqoq.png
+DISPLAY environment variable: :0
+Starting scrot capture to /tmp/mcp_screenshot_puewyqoq.png
+scrot subprocess started
+scrot subprocess completed with returncode 0
+scrot stdout: 
+scrot success: True, file exists: True, size: 4961902
+INFO:handlers:OCR completed, text length: 0
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:58072 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1220588]
+INFO:     Started server process [1223414]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 INFO:handlers:Calling tool: take_screenshot
 INFO:handlers:Processing take_screenshot with mode: description
-INFO:handlers:OCR completed, text length: 34
-INFO:httpx:HTTP Request: POST https://api.x.ai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_qn6yftrj.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 3422553
+INFO:handlers:OCR completed, text length: 0
 INFO:handlers:Screenshot processing and analysis completed
-DEBUG: scrot failed or empty file, returncode=0, file_exists=True, size=0
-DEBUG: Created dummy image at /tmp/mcp_screenshot_potk0b86.png
-INFO:     127.0.0.1:57810 - "POST /mcp HTTP/1.1" 200 OK
-pplication shutdown complete.
-INFO:     Finished server process [1129742]
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1223414]
+INFO:     Started server process [1224300]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:45522 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_yem9ui1e.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 3226376
+INFO:handlers:Starting OCR
+INFO:handlers:OCR completed, text length: 17392
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1224300]
+INFO:     Started server process [1224721]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:36758 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_rw2zx1fk.png
+INFO:root:scrot returncode: 0
+INFO:root:scrot success: False, file exists: True, size: 0
+ERROR:handlers:Error in take_screenshot: Failed to capture screenshot
+INFO:     127.0.0.1:36758 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1224721]
+INFO:     Started server process [1225011]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:54016 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54016 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_alr0c0hc.png
+INFO:root:import returncode: -2
+ERROR:root:import failed with return code -2: [Errno 2] No such file or directory: 'xdotool'
+INFO:root:import success: False, file exists: True, size: 0
+ERROR:handlers:Error in take_screenshot: Failed to capture screenshot
+INFO:     127.0.0.1:45736 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1225011]
+INFO:     Started server process [1225706]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_y6hpr522.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 72159
+INFO:handlers:Starting OCR
+INFO:handlers:OCR completed, text length: 583
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:57082 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:44106 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44106 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:32928 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32940 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:47490 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47496 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:47032 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47044 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_uc4nn0ef.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 174264
+INFO:handlers:Starting OCR
+INFO:handlers:OCR completed, text length: 502
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:51290 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51304 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_r9vsx11z.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 593329
+INFO:handlers:Starting OCR
+INFO:handlers:OCR completed, text length: 1090
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:39806 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39820 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_d7rmljun.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 641295
+INFO:handlers:Starting OCR
+INFO:handlers:OCR completed, text length: 655
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:51304 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:36108 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36118 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_g3m5anl8.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 641295
+INFO:handlers:Starting OCR
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:39820 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:OCR completed, text length: 655
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:36118 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:52390 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52406 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_xxb8ehp1.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 641295
+INFO:handlers:Starting OCR
+INFO:handlers:OCR completed, text length: 655
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:35510 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35520 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot__gvdl1qg.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 641295
+INFO:handlers:Starting OCR
+INFO:handlers:OCR completed, text length: 655
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:httpx:HTTP Request: POST https://api.x.ai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:handlers:Description generated, length: 4489
+INFO:handlers:Screenshot processing and analysis completed
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:35510 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:60352 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60356 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_f27m_bhg.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 641295
+INFO:handlers:Starting OCR
+INFO:handlers:OCR completed, text length: 655
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:60352 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:47338 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47338 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_e2ufurv1.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 58816
+INFO:handlers:Starting OCR
+INFO:handlers:OCR completed, text length: 418
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:43950 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:46528 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46528 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1225706]
+INFO:     Started server process [1234212]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:49566 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49566 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_alqytel3.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 245386
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:33808 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1234212]
+INFO:     Started server process [1235154]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_iclj43s6.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 79006
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:handlers:Description generated, length: 17
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:47136 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1235154]
+INFO:     Started server process [1235264]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_a4i32oi6.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 100922
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:httpx:HTTP Request: POST https://api.x.ai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:handlers:Description generated, length: 7239
+INFO:handlers:Screenshot processing and analysis completed
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:35450 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35450 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Calling tool: take_screenshot
+INFO:handlers:Processing take_screenshot with mode: description
+INFO:root:take_screenshot called with output_path: /tmp/mcp_screenshot_xxqc0l1z.png
+INFO:root:import returncode: 0
+INFO:root:import success: True, file exists: True, size: 48405
+INFO:handlers:Starting Grok analysis with mode: description
+INFO:handlers:Generating description
+INFO:httpx:HTTP Request: POST https://api.x.ai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:handlers:Description generated, length: 5528
+INFO:handlers:Screenshot processing and analysis completed
+INFO:     127.0.0.1:33010 - "POST /mcp HTTP/1.1" 200 OK
+INFO:handlers:Initializing MCP connection with client protocol version: 2025-11-25
+INFO:     127.0.0.1:42726 - "POST /mcp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42726 - "POST /mcp HTTP/1.1" 200 OK

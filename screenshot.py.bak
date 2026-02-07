@@ -17,7 +17,6 @@ from openai import AsyncOpenAI
 import subprocess
 import threading
 
-
 async def take_screenshot(output_path: str) -> bool:
     """Take a screenshot of the active window using scrot.
 
@@ -42,7 +41,7 @@ async def take_screenshot(output_path: str) -> bool:
                 env=os.environ,
                 capture_output=True,
                 text=True,
-                timeout=5.0,
+                timeout=5.0
             )
             if id_result.returncode != 0:
                 return -3, "", f"Failed to get active window ID: {id_result.stderr}"
@@ -54,7 +53,7 @@ async def take_screenshot(output_path: str) -> bool:
                 env=os.environ,
                 capture_output=True,
                 text=True,
-                timeout=config.SUBPROCESS_TIMEOUT,
+                timeout=config.SUBPROCESS_TIMEOUT
             )
             return result.returncode, result.stdout, result.stderr
         except subprocess.TimeoutExpired:
@@ -67,14 +66,8 @@ async def take_screenshot(output_path: str) -> bool:
         logging.info(f"import returncode: {returncode}")
         if returncode != 0:
             logging.error(f"import failed with return code {returncode}: {stderr}")
-        success = (
-            returncode == 0
-            and os.path.exists(output_path)
-            and os.path.getsize(output_path) > 0
-        )
-        logging.info(
-            f"import success: {success}, file exists: {os.path.exists(output_path)}, size: {os.path.getsize(output_path) if os.path.exists(output_path) else 0}"
-        )
+        success = returncode == 0 and os.path.exists(output_path) and os.path.getsize(output_path) > 0
+        logging.info(f"import success: {success}, file exists: {os.path.exists(output_path)}, size: {os.path.getsize(output_path) if os.path.exists(output_path) else 0}")
         return success
     except Exception as e:
         logging.error(f"Exception in take_screenshot: {e}")
@@ -103,7 +96,7 @@ async def extract_text_from_image(image_path: str) -> Optional[str]:
 
         text = await asyncio.wait_for(
             asyncio.get_event_loop().run_in_executor(None, ocr_task),
-            timeout=config.OCR_TIMEOUT,
+            timeout=config.OCR_TIMEOUT
         )
 
         return text.strip() if text else None
@@ -113,9 +106,7 @@ async def extract_text_from_image(image_path: str) -> Optional[str]:
         return None
 
 
-async def analyze_screenshot_with_grok(
-    image_path: str, mode: str = "description", question: Optional[str] = None
-) -> Optional[str]:
+async def analyze_screenshot_with_grok(image_path: str, mode: str = "description", question: Optional[str] = None) -> Optional[str]:
     """Analyze screenshot with Grok-4 AI.
 
     Args:
@@ -131,12 +122,11 @@ async def analyze_screenshot_with_grok(
     try:
         # Read the image as base64
         import base64
-
         with open(image_path, "rb") as img_file:
-            image_data = base64.b64encode(img_file.read()).decode("utf-8")
+            image_data = base64.b64encode(img_file.read()).decode('utf-8')
 
         description_prompt = """
-You are an expert UI analyst specializing in text-based user interfaces (TUIs) from terminal screenshots. Analyze the provided screenshot of an LLM CLI TUI (a command-line interface tool built in Python, rendered in a terminal window). The image has been cropped to focus only on the TUI content, excluding any surrounding terminal borders or evidence of the environment to ensure it's viewed as a standard software interface.
+        You are an expert UI analyst specializing in text-based user interfaces (TUIs) from terminal screenshots. Analyze the provided screenshot of an LLM CLI TUI (a command-line interface tool built in Python, rendered in a terminal window). The image has been cropped to focus only on the TUI content, excluding any surrounding terminal borders or evidence of the environment to ensure it's viewed as a standard software interface.
 Your task is to generate a detailed, structured textual description of the TUI's UI elements. This description will be fed back to an AI code generator ('grok-code-fast-1') that can't see images, so it must be precise, comprehensive, and text-only to help verify and iterate on the design.
 Structure your response exactly as follows:
 
@@ -157,7 +147,7 @@ Focus only on UI elements relevant to the TUI design—ignore any non-relevant a
 Image to analyze:
 """
 
-        question_prompt = f"""
+        question_prompt = """
 You are an expert UI analyst specializing in text-based user interfaces
 (TUIs) from terminal screenshots. Analyze the provided screenshot of an
 LLM CLI TUI (a command-line interface tool built in Python).
@@ -203,32 +193,21 @@ any non-relevant artifacts. Be objective, detailed, and use coordinates
 applicable.
 
 Image to analyze:
-"""
-
-        if mode == "description":
-            prompt_text = description_prompt
-        elif mode == "question":
-            prompt_text = question_prompt
-        else:
-            # For "both" or invalid, default to description (but ideally handle "both" separately)
-            prompt_text = description_prompt
+        """
 
         messages = [
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": prompt_text},
-                    {
-                        "type": "image_url",
-                        "image_url": {"url": f"data:image/png;base64,{image_data}"},
-                    },
-                ],
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image_data}"}},
+                    {"type": "text", "text": f"Analyze this screenshot in {mode} mode{' with question: ' + question if question else ''}."}
+                ]
             }
         ]
 
         return await asyncio.wait_for(
             generate_message_with_grok(messages, max_tokens=10000),
-            timeout=config.API_TIMEOUT,
+            timeout=config.API_TIMEOUT
         )
     except asyncio.TimeoutError:
         return "Analysis timed out."
@@ -236,9 +215,7 @@ Image to analyze:
         return f"Analysis failed: {str(e)}"
 
 
-async def generate_message_with_grok(
-    messages: List[Dict[str, Any]], max_tokens: int = 10000
-) -> Optional[str]:
+async def generate_message_with_grok(messages: List[Dict[str, Any]], max_tokens: int = 10000) -> Optional[str]:
     """Generate a message using Grok-4 AI.
 
     Args:
@@ -255,27 +232,24 @@ async def generate_message_with_grok(
             last_message = messages[-1] if messages else {}
             content = last_message.get("content", "")
             if isinstance(content, list) and content:
-                text = (
-                    content[0].get("text", "")
-                    if isinstance(content[0], dict)
-                    else str(content[0])
-                )
+                text = content[0].get("text", "") if isinstance(content[0], dict) else str(content[0])
             else:
                 text = str(content)
             return f"Simulated Grok response to: {text[:100]}..."
 
-        client = AsyncOpenAI(api_key=api_key, base_url="https://api.x.ai/v1")
-
-        from config import config  # Import here to avoid circular imports
+        client = AsyncOpenAI(
+            api_key=api_key,
+            base_url="https://api.x.ai/v1"
+        )
 
         response = await asyncio.wait_for(
             client.chat.completions.create(
                 model="grok-4",  # Use Grok-4 model
                 messages=messages,
                 max_tokens=max_tokens,
-                temperature=0.7,
+                temperature=0.7
             ),
-            timeout=config.API_TIMEOUT,
+            timeout=30.0
         )
 
         if response.choices and response.choices[0].message:
@@ -324,7 +298,7 @@ def get_file_content(uri: str) -> Optional[bytes]:
     if validate_uri(uri):
         abs_path = os.path.abspath(uri[7:])
         try:
-            with open(abs_path, "rb") as f:
+            with open(abs_path, 'rb') as f:
                 return f.read()
         except Exception:
             pass

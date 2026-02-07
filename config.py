@@ -20,8 +20,8 @@ class Config:
 
     # Timeouts (in seconds)
     OCR_TIMEOUT: float = float(os.getenv("SCREENSHOT_OCR_TIMEOUT", "30.0"))
-    API_TIMEOUT: float = float(os.getenv("SCREENSHOT_API_TIMEOUT", "60.0"))
-    SUBPROCESS_TIMEOUT: float = float(os.getenv("SCREENSHOT_SUBPROCESS_TIMEOUT", "10.0"))
+    API_TIMEOUT: float = float(os.getenv("SCREENSHOT_API_TIMEOUT", "240.0"))
+    SUBPROCESS_TIMEOUT: float = float(os.getenv("SCREENSHOT_SUBPROCESS_TIMEOUT", "30.0"))
 
     # Processing
     MAX_WORKERS: int = int(os.getenv("SCREENSHOT_MAX_WORKERS", "4"))

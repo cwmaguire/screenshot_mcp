@@ -107,7 +107,8 @@ async def health_check() -> str:
 @mcp.tool()
 async def take_screenshot(mode: Optional[str] = "description", question: Optional[str] = None) -> list[types.TextContent | types.ImageContent]:
     """
-    Take a screenshot of the currently active window. Optionally analyze with grok-4: ask a question, get debugging description, or both.
+    Take a screenshot of the currently active window.
+    Optionally analyze with grok-4: ask a question, get debugging description, or both.
     """
     start_time = time.time()
     metrics.increment("requests_total")
@@ -147,12 +148,12 @@ async def take_screenshot(mode: Optional[str] = "description", question: Optiona
             )
         except asyncio.TimeoutError:
             raise ProcessingTimeoutError(f"Image processing timed out after {OCR_TIMEOUT} seconds")
-        
+
         content = [
             types.TextContent(type="text", text=f"Screenshot saved to {filename} (original: {original_filename})"),
             types.ImageContent(type="image", data=img_base64, mimeType="image/png")
         ]
-        
+
         # Check for grok-4 analysis
         if mode:
             if rate_limiter.get_daily_count() >= config.DAILY_LIMIT:
@@ -160,16 +161,15 @@ async def take_screenshot(mode: Optional[str] = "description", question: Optiona
 
             if is_out_of_tokens():
                 raise APIError("Out of tokens, cannot process images")
-            
+
             # Build prompt
-            ocr_context = f"\n\nExtracted text from the image:\n{ocr_text}" if ocr_text else ""
             if mode == "description":
-                prompt = f"Provide a detailed description of this screenshot, focusing on any visible text, code, or UI elements.{ocr_context}"
+                prompt = f"Provide a detailed description of this screenshot, focusing on any visible text, code, or UI elements."
             elif mode == "question":
-                prompt = f"Answer the following question about this screenshot: {question}{ocr_context}"
+                prompt = f"Answer the following question about this screenshot: {question}"
             elif mode == "both":
                 prompt = f"First, provide a detailed description of this screenshot, focusing on any visible text, code, or UI elements. Then, answer the following question about the screenshot: {question}{ocr_context}"
-            
+
             # Call grok-4 with timeout
             xai_client = AsyncClient(api_key=os.getenv("XAI_API_KEY"))
             chat = xai_client.chat.create(model="grok-4")
@@ -180,14 +180,14 @@ async def take_screenshot(mode: Optional[str] = "description", question: Optiona
                 grok_response = response.content
             except asyncio.TimeoutError:
                 raise APIError(f"Grok-4 API call timed out after {API_TIMEOUT} seconds")
-            
+
             # Check for out of tokens
             if "out of tokens" in grok_response.lower():
                 set_out_of_tokens()
                 raise APIError("Out of tokens detected in grok-4 response")
-            
+
             rate_limiter.increment_daily_count()
-            
+
             content.append(types.TextContent(type="text", text=f"grok-4 analysis: {grok_response}"))
 
         # Record success metrics

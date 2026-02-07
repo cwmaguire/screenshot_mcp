@@ -1,12 +1,15 @@
 {
-  "model": "grok-code-fast-1",
+  "model": "grok-4-1-fast-reasoning",
   "mcpServers": {
     "screenshot-server": {
       "name": "screenshot-server",
       "transport": {
         "type": "stdio",
         "command": "uv",
-        "args": ["run", "server.py"],
+        "args": [
+          "run",
+          "server.py"
+        ],
         "env": {}
       }
     }
